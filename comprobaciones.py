@@ -1,7 +1,7 @@
-def detectar_escalera(lista, n):#FUNCIÓN QUE DETECTA SI UN JUGADOR TIENE UNA ESCALERA EN SU MANO
+def detectar_escalera(lista, n):  # FUNCIÓN QUE DETECTA SI UN JUGADOR TIENE UNA ESCALERA EN SU MANO
     # Verificar si la lista tiene al menos n elementos
     if len(lista) < n:
-        return None
+        return False
     
     # Convertir la lista a un conjunto para eliminar duplicados
     conjunto_lista = set(lista)
@@ -20,7 +20,23 @@ def detectar_escalera(lista, n):#FUNCIÓN QUE DETECTA SI UN JUGADOR TIENE UNA ES
                 max_consecutivos = consecutivos
     
     # Devolver los 5 números consecutivos más altos
-    return max_consecutivos
+    return max_consecutivos if max_consecutivos is not None else False
+
+# ... (otras funciones)
+
+def carta_alta(jugador):
+    # Obtener los números de las dos cartas en la mano del jugador
+    numeros = [int(carta[:-1]) for carta in jugador['car']]
+
+    # Encontrar la carta más alta
+    carta_alta_numero = max(numeros)
+
+    # Obtener el palo de la carta más alta
+    palo_carta_alta = [carta[-1] for carta in jugador['car'] if int(carta[:-1]) == carta_alta_numero][0]
+
+    # Devolver la carta alta como una cadena en notación de poker
+    return carta_alta_numero, palo_carta_alta
+
 
 def detectar_escalera_de_color(lista):#FUNCIÓN QUE DETECTA SI UN JUGADOR TIENE UNA ESCALERA DE COLOR EN SU MANO
     # Verificar si la lista tiene al menos 5 elementos
@@ -47,7 +63,6 @@ def detectar_escalera_de_color(lista):#FUNCIÓN QUE DETECTA SI UN JUGADOR TIENE 
 
     # Devolver los 5 números consecutivos más altos y el símbolo
     return max_consecutivos, simbolo_relacionado
-
 def comprobar_color(lista):#FUNCIÓN QUE DETECTA SI UN JUGADOR TIENE COLOR EN SU MANO
     color = {}
 
@@ -56,7 +71,6 @@ def comprobar_color(lista):#FUNCIÓN QUE DETECTA SI UN JUGADOR TIENE COLOR EN SU
         if ocurrencias == 5:
             color[elemento]=ocurrencias
     return color
-
 def detectar_parejas(lista):#FUNCIÓN QUE DETECTA SI UN JUGADOR TIENE PAREJA EN SU MANO
     parejas = {}
 
@@ -65,7 +79,6 @@ def detectar_parejas(lista):#FUNCIÓN QUE DETECTA SI UN JUGADOR TIENE PAREJA EN 
         if ocurrencias == 2:
             parejas[elemento] = ocurrencias
     return parejas 
-
 def detectar_trios(lista):#FUNCIÓN QUE DETECTA SI UN JUGADOR TIENE TRÍO EN SI MANO
     trios = {}
 
@@ -74,7 +87,6 @@ def detectar_trios(lista):#FUNCIÓN QUE DETECTA SI UN JUGADOR TIENE TRÍO EN SI 
         if ocurrencias == 3:
             trios[elemento] = ocurrencias
     return trios
-
 def detectar_poker(lista):#FUNCIÓN QUE DETECTA SI UN JUGADOR TIENE POKER EN SU MANO
     poker = {}
 
@@ -84,70 +96,59 @@ def detectar_poker(lista):#FUNCIÓN QUE DETECTA SI UN JUGADOR TIENE POKER EN SU 
             poker[elemento] = ocurrencias
     return poker
 
-def carta_alta(jugador):
-    # Obtener los números de las dos cartas en la mano del jugador
-    numeros = [int(carta[:-1]) for carta in jugador['car']]
-
-    # Encontrar la carta más alta
-    carta_alta_numero = max(numeros)
-
-    # Obtener el palo de la carta más alta (usando la última carta en la mano)
-    palo_carta_alta = jugador['car'][-1][-1]
-
-    # Devolver la carta alta como una cadena en notación de poker
-    return f"{carta_alta_numero}{palo_carta_alta}"
-
-
-
-def comprobacion(jugador,mesa): #FUNCIÓN QUE ANALIZA LA MANO DE CADA JUGADOR
-    cartas_totales = jugador['car']+mesa["car"]
+def comprobacion(jugador, mesa):  # FUNCIÓN QUE ANALIZA LA MANO DE CADA JUGADOR
+    cartas_totales = jugador['car'] + mesa["car"]
     for carta in cartas_totales:
         for simbolo in carta:
             numeros = simbolo[0:13:2]
             palos = simbolo[1:13:2]
 
-            pareja = detectar_parejas(numeros)
-            if len(pareja) == 1:
-                for elemento, ocurrencias in pareja.items():
-                    print(jugador,"tiene pareja de",elemento)
+    pareja = detectar_parejas(numeros)
+    if len(pareja) == 1:
+        for elemento, ocurrencias in pareja.items():
+            print(jugador, "tiene pareja de", elemento)
 
-            if len(pareja) == 2:
-                for elemento,ocurrencias in pareja.items():
-                    print(jugador,"tiene doble pareja de",elemento(0), "y",elemento(1))
+    if len(pareja) == 2:
+        for elemento, ocurrencias in pareja.items():
+            print(jugador, "tiene doble pareja de", elemento[0], "y", elemento[1])
             
-            trio = detectar_trios(numeros)
-            if len(trio)== 1:
-                for elemento,ocurrencias in trio.items():
-                    print(jugador,"tiene trío de",elemento,".")
+    trio = detectar_trios(numeros)
+    if len(trio) == 1:
+        for elemento, ocurrencias in trio.items():
+            print(jugador, "tiene trío de", elemento, ".")
 
-            poker = detectar_poker(numeros)
-            if len(poker) == 1:
-                for elemento,ocurrencias in poker.items():
-                    print(jugador,"tiene poker de",elemento,".")
+    poker = detectar_poker(numeros)
+    if len(poker) == 1:
+        for elemento, ocurrencias in poker.items():
+            print(jugador, "tiene poker de", elemento, ".")
 
-            color = comprobar_color(palos)
-            if len(color)==1:
-                for elemento,ocurrencias in color.items():
-                    print(jugador,"tiene color de",elemento,".")
+    color = comprobar_color(palos)
+    if len(color) == 1:
+        for elemento, ocurrencias in color.items():
+            print(jugador, "tiene color de", elemento, ".")
 
-            escalera = detectar_escalera(numeros,5)
-            if escalera:
-                print(jugador,"tiene escalera de",escalera,".")
+    escalera = detectar_escalera(numeros, 5)
+    if escalera is not False:
+        print(jugador, "tiene escalera de", escalera, ".")
 
-            escalera_de_color,colour = detectar_escalera_de_color(cartas_totales)
-            if escalera_de_color:
-                print(jugador,"tiene una escalera de color de",escalera_de_color)
-            if pareja is None and trio is None and poker is None and color is None and escalera is None and escalera_de_color is None:
-                print("La carta mas alta de",jugador['nombre'],"es",carta_alta(jugador))
+    escalera_de_color, colour = detectar_escalera_de_color(cartas_totales)
+    if escalera_de_color:
+        print(jugador, "tiene una escalera de color de", escalera_de_color)
+            
+    if not (pareja or trio or poker or color or escalera or escalera_de_color):
+        numero,palo=carta_alta(jugador)
+        print("La carta mas alta de", jugador['nombre'], "es",numero,"de",palo)
 
 mesa = {
-    'car':['9♦', '12♣', '7♣', '11♥', '5♥']
+    'car': ['9♦','2♥', '7♣', '12♥', '5♥']
 }
-jugador ={
-    'car':['2♥', '8♠']
+jugador = {
+    'nombre':'Rodrigo',
+    'car': ['12♣', '8♠']
 }
 
-comprobacion(jugador,mesa)
+comprobacion(jugador, mesa)
+
 
 
 

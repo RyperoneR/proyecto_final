@@ -7,7 +7,7 @@ def reparto_mano(jugadores): #FUNCIÓN QUE REPARTE A UN JUGADOR ESPECÍFICO 2 CA
         baraja.remove(carta_1)
         carta_2=rand.choice(baraja)
         baraja.remove(carta_2)
-        mano = carta_1,carta_2
+        mano = [carta_1,carta_2]
         jugador['car']+= mano
 
 def reparto_mesa(mesa): #FUNCIÓN QUE SELECCIONA 3 CARTAS DE LA BARAJA Y LAS PONE EN LA MESA
@@ -28,6 +28,7 @@ def carta_ronda(mesa):
 
 def decisiones_maquina(jugadores,mesa): #FUNCIÓN QUE HACE ELEGIR A LOS JUGADORES DE LA MESA QUE NO SEAN EL USUARIO SU MOVIMIENTO
     for jugador in jugadores:
+            print("   ")
             if mesa['c'] == 0:
                 posibilidades = ["pasar","apostar","irse"]
                 decision = rand.choice(posibilidades)
@@ -154,12 +155,12 @@ def detectar_poker(lista):#FUNCIÓN QUE DETECTA SI UN JUGADOR TIENE POKER EN SU 
     return poker
 
 
-def comprobacion(jugador): #FUNCIÓN QUE ANALIZA LA MANO DE CADA JUGADOR
-    cartas_totales = jugador['cartas']+mesa["cartas"]
+def comprobacion(jugador,mesa): #FUNCIÓN QUE ANALIZA LA MANO DE CADA JUGADOR
+    cartas_totales = jugador['car']+mesa["car"]
     for carta in cartas_totales:
         for simbolo in carta:
-            numeros = simbolo(0,2,4,6,8,10,12)
-            palos = simbolo(1,3,5,7,9,11,13)
+            numeros = simbolo[0,2,4,6,8,10,12]
+            palos = simbolo[1,3,5,7,9,11,13]
 
             pareja = detectar_parejas(numeros)
             if len(pareja) == 1:
