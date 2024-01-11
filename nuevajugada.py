@@ -398,20 +398,15 @@ for jugadores in jugadores_mesa:
 
     print("  ")
 
-# Obtén las manos de cada jugador
 manos = [jugador['mano'] for jugador in jugadores_total]
 
-# Encuentra la mano máxima
 ganador = max(manos)
 
-# Encuentra todos los ganadores
 ganadores = [diccionario for diccionario in jugadores_total if diccionario['mano'] == ganador]
 
-# Verifica si hay un solo ganador
 if len(ganadores) == 1:
     print(ganadores[0]['nombre'], "ha ganado la mano.")
 else:
-    # Si hay empate, compara las cartas más altas
     ganador_con_carta_mas_alta = max(ganadores, key=lambda x: max(x['car']))
     
     print(ganador_con_carta_mas_alta['nombre'], "ha ganado con la mano por carta alta.")
