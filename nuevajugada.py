@@ -60,12 +60,18 @@ def decision(usuario,mesa):
                         elif decision == 'i':
                             print("Te retiras de esta mano. Prueba suerte en la siguiente")
                             usuario['m']=False
+                        else:
+                            print("Ha ocurrido un error. Intentelo de nuevo.")
+                            usuario['m']=False
                     elif usuario['f']==0:
                         opciones = input("No te quedan fichas. Pasar(p)/Irse(i):")
                         if opciones == 'p':
                             pass
                         elif opciones =='i':
                             print("Te retiras de esta mano. Prueba suerte en la siguiente")
+                            usuario['m']=False
+                        else:
+                            print("Ha ocurrido un error. Intentelo de nuevo.")
                             usuario['m']=False
                 elif usuario['a']==mesa['c'] and mesa['c']!=0:
                     pass
@@ -92,8 +98,12 @@ def decision(usuario,mesa):
                                 mesa['f']+=igualada
                             else:
                                 print("Ha ocurrido un error")
+                                usuario['m']=False
                         elif decision == 'i':
                             print("Te retiras de esta mano. Prueba suerte en la siguiente")
+                            usuario['m']=False
+                        else:
+                            print("Ha ocurrido un error. Intentelo de nuevo.")
                             usuario['m']=False
                     elif usuario['f']==0:
                         opciones = input("No te quedan fichas. Pasar(p)/Irse(i):")
@@ -101,6 +111,9 @@ def decision(usuario,mesa):
                             pass
                         elif opciones =='i':
                             print("Te retiras de esta mano. Prueba suerte en la siguiente")
+                            usuario['m']=False
+                        else:
+                            print("Ha ocurrido un error. Intentelo de nuevo.")
                             usuario['m']=False
 
     else:
