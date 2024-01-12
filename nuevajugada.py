@@ -419,11 +419,12 @@ ganadores = [diccionario for diccionario in jugadores_total if diccionario['mano
 
 if len(ganadores) == 1:
     print(ganadores[0]['nombre'], "ha ganado la mano.")
+    print(ganadores[0]['nombre'],"recibe",table['f'],"fichas.")
 else:
     ganador_con_carta_mas_alta = max(ganadores, key=lambda x: max(x['car']))
     
     print(ganador_con_carta_mas_alta['nombre'], "ha ganado con la mano por carta alta.")
-
+    print(ganador_con_carta_mas_alta['nombre'],"recibe",table['f'],"fichas.")
 
 
 
